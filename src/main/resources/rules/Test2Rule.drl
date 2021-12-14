@@ -12,6 +12,6 @@ rule "rule complex"
         vCaseWrapper: CaseWrapper( mobileNo == "90876546", vlogs: logs != null, vJavaLogs: seqAsJavaList(logs))
         List( size() > 0) from collect(LogStruct(log != null) from vJavaLogs)
     then
-        NewAction vAction = new NewAction("Hello World","Details goes here")
+         Action vAction = new Action("Hello World","Details goes here")
         vCaseWrapper.action = vAction
 end
