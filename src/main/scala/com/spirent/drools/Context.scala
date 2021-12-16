@@ -1,4 +1,4 @@
-package com.spirent
+package com.spirent.drools
 
 import javax.validation.{Validation, Validator}
 
@@ -7,5 +7,5 @@ import javax.validation.{Validation, Validator}
  * @since 14.12.2021
  */
 object Context {
-  var validator : Validator = Validation.buildDefaultValidatorFactory().getValidator
+  var validator: Validator = Validation.buildDefaultValidatorFactory().getValidator
 }

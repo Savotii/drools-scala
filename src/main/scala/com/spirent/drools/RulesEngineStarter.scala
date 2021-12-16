@@ -1,7 +1,8 @@
-package com.spirent
+package com.spirent.drools
 
-import com.spirent.dto.kpi.{Kpi, KpiPhase, Location}
-import com.spirent.dto.rules.global.{GlobalBoolean, GlobalRuleCounter}
+import com.spirent.drools.dao.impl.RuleDaoImpl
+import com.spirent.drools.dto.rules.global.GlobalRuleCounter
+import com.spirent.drools.service.RuleServiceImpl
 
 /**
  * @author ysavi2
@@ -17,6 +18,8 @@ object RulesEngineStarter {
     println("4. " + GlobalRuleCounter.updateAndGet(key))
     println("5. " + GlobalRuleCounter.get(key))
 
+    RuleServiceImpl.reloadRules
+    RuleDaoImpl.findAllRules.foreach(m => println(m.toString))
   }
 
 }

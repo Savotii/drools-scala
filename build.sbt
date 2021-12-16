@@ -2,7 +2,7 @@ name := "Spark-drools"
 
 version := "1.0"
 
-scalaVersion := "2.13.7"
+scalaVersion := "2.13.7" //"2.12.7" //
 
 val sparkVersion = "3.2.0"
 
@@ -41,3 +41,10 @@ libraryDependencies += "javax.validation" % "validation-api" % "2.0.1.Final"
 libraryDependencies += "ma.glasnost.orika" % "orika-core" % "1.5.4"
 libraryDependencies += "org.projectlombok" % "lombok" % "1.18.22"
 libraryDependencies += "org.apache.kafka" %% "kafka" % "3.0.0"
+//// https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core
+//libraryDependencies += "org.hibernate.orm" % "hibernate-core" % "6.0.0.Beta2"
+// https://mvnrepository.com/artifact/org.postgresql/postgresql
+libraryDependencies += "org.postgresql" % "postgresql" % "42.3.1"
+libraryDependencies += "com.typesafe.slick" %% "slick" % "3.3.3"
+libraryDependencies += "org.slf4j" % "slf4j-api" % "1.7.5"
+libraryDependencies += "org.slf4j" % "slf4j-simple" % "1.7.5"

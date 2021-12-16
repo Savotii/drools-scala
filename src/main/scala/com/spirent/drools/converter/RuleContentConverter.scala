@@ -1,6 +1,6 @@
-package com.spirent.converter
+package com.spirent.drools.converter
 
-import com.spirent.dto.rules.RuleContent
+import com.spirent.drools.dto.rules.RuleContent
 
 /**
  * @author ysavi2

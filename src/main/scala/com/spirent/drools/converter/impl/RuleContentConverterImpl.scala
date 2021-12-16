@@ -1,18 +1,21 @@
-package com.spirent.converter.impl
+package com.spirent.drools.converter.impl
 
-import com.spirent.converter.RuleContentConverter
-import com.spirent.dto.rules.{RuleClause, RuleContent}
+import com.spirent.drools.converter.RuleContentConverter
+import com.spirent.drools.dto.rules.{RuleClause, RuleContent}
 import lombok.extern.slf4j.Slf4j
 import org.apache.commons.lang3.StringUtils
 import org.drools.compiler.lang.DroolsSoftKeywords._
 import org.drools.modelcompiler.builder.generator.RuleContext
+
+import scala.collection.mutable
+import scala.collection.mutable.ListBuffer
 
 /**
  * @author ysavi2
  * @since 14.12.2021
  */
 @Slf4j
-class RuleContentConverterImpl extends RuleContentConverter {
+object RuleContentConverterImpl extends RuleContentConverter {
   private val LINE_SEPARATOR_SYMBOL: String = "_/_/"
   private val BREAK_LINE_SYMBOL = " \n "
   private val QUOTE = "\""
@@ -44,7 +47,7 @@ class RuleContentConverterImpl extends RuleContentConverter {
         case RULE => previousRuleName = getRuleNameFromPattern(block)
           val clause: RuleClause = clauses.getOrElse(previousRuleName, new RuleClause)
           clause.ruleName = previousRuleName
-          clauses += (previousRuleName, clause)
+          clauses += (previousRuleName -> clause)
 
         case WHEN =>
           val whenClause = clauses.get(previousRuleName)
@@ -62,7 +65,7 @@ class RuleContentConverterImpl extends RuleContentConverter {
       }
     }
 
-    convertedContent.setClauses(clauses.values.toList)
+    convertedContent.setClauses(ListBuffer.from(clauses.values))
     convertedContent
   }
 
@@ -119,19 +122,19 @@ class RuleContentConverterImpl extends RuleContentConverter {
     clause.thenClause = value.replace(THEN, StringUtils.EMPTY).trim
   }
 
-  private def fillImports(sb: StringBuilder, ruleImports: Set[String]): Unit = {
+  private def fillImports(sb: StringBuilder, ruleImports: mutable.Set[String]): Unit = {
     if (ruleImports.isEmpty) return
 
     ruleImports.foreach(i => sb.append(IMPORT).append(StringUtils.SPACE).append(i).append(LINE_SEPARATOR_SYMBOL).append(BREAK_LINE_SYMBOL))
   }
 
-  private def fillGlobalVariables(sb: StringBuilder, globalVariables: List[String]): Unit = {
+  private def fillGlobalVariables(sb: StringBuilder, globalVariables: ListBuffer[String]): Unit = {
     if (globalVariables.isEmpty) return
     globalVariables.foreach((i: String) => sb.append(GLOBAL).append(StringUtils.SPACE).append(i).append(LINE_SEPARATOR_SYMBOL).append(BREAK_LINE_SYMBOL))
   }
 
   //todo
-  private def fillAttributes(sb: StringBuilder, ruleAttributes: Set[String]): Unit = {
+  private def fillAttributes(sb: StringBuilder, ruleAttributes: mutable.Set[String]): Unit = {
     //stub
   }
 
@@ -140,7 +143,7 @@ class RuleContentConverterImpl extends RuleContentConverter {
     sb.append(DIALECT).append(StringUtils.SPACE).append(wrapByQuotes(dialect.name.toLowerCase)).append(LINE_SEPARATOR_SYMBOL).append(BREAK_LINE_SYMBOL)
   }
 
-  private def fillClauses(sb: StringBuilder, clauses: List[RuleClause]): Unit = {
+  private def fillClauses(sb: StringBuilder, clauses: ListBuffer[RuleClause]): Unit = {
     if (clauses.isEmpty) return
     /* Example.
              * rule "Name of your rule"
@@ -153,7 +156,7 @@ class RuleContentConverterImpl extends RuleContentConverter {
              * end
              */
     clauses.foreach((cl: RuleClause) => {
-      def foo(cl: RuleClause) = {
+      def foo(cl: RuleClause): Unit = {
         fillRuleName(sb, cl.ruleName)
         fillWhenClause(sb, cl.whenClause)
         fillThenClause(sb, cl.thenClause)
