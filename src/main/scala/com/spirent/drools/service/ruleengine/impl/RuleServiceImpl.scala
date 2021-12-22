@@ -1,10 +1,11 @@
-package com.spirent.drools.service
+package com.spirent.drools.service.ruleengine.impl
 
 import com.spirent.drools.converter.impl.RuleContentConverterImpl
 import com.spirent.drools.dao.impl.RuleDaoImpl
 import com.spirent.drools.dto.rules.Rule
+import com.spirent.drools.service.ruleengine.RuleService
 import org.kie.api.KieServices
-import org.kie.api.builder.{KieRepository, Message}
+import org.kie.api.builder.Message
 import org.kie.api.runtime.KieContainer
 import org.slf4j.LoggerFactory
 
@@ -18,11 +19,11 @@ object RuleServiceImpl extends RuleService {
   private var kieContainer: KieContainer = _
   private val logger = LoggerFactory.getLogger(getClass)
 
-  def setKieContainer(kieContainer: KieContainer) : Unit = {
+  def setKieContainer(kieContainer: KieContainer): Unit = {
     this.kieContainer = kieContainer
   }
 
-  def getKieContainer : KieContainer = {
+  def getKieContainer: KieContainer = {
     kieContainer
   }
 
@@ -30,15 +31,15 @@ object RuleServiceImpl extends RuleService {
     setKieContainer(loadContainerFromRules(RuleDaoImpl.findAllRules))
   }
 
-  def loadContainerFromRules(rules: ListBuffer[Rule]): KieContainer =  {
+  def loadContainerFromRules(rules: ListBuffer[Rule]): KieContainer = {
     var startTime = System.currentTimeMillis
     val ks = KieServices.Factory.get
     val kr = ks.getRepository
     val kfs = ks.newKieFileSystem
 
-    for ( rule <- rules) {
+    for (rule <- rules) {
       //todo must be model.
-      val  drl= RuleContentConverterImpl.clearSpecialSymbols(RuleContentConverterImpl.convertToString(rule.ruleContent))
+      val drl = RuleContentConverterImpl.clearSpecialSymbols(RuleContentConverterImpl.convertToString(rule.ruleContent))
       kfs.write("src/main/resources/" + drl.hashCode + ".drl", drl)
     }
 
@@ -49,7 +50,7 @@ object RuleServiceImpl extends RuleService {
       throw new RuntimeException("Build Errors:\n" + kb.getResults.toString)
     }
     val endTime = System.currentTimeMillis
-    logger.info("Time to build rules : {} ms.", endTime - startTime )
+    logger.info("Time to build rules : {} ms.", endTime - startTime)
     startTime = System.currentTimeMillis
     val container = ks.newKieContainer(kr.getDefaultReleaseId)
     logger.info("Time to load container: {} ms.", System.currentTimeMillis - startTime)

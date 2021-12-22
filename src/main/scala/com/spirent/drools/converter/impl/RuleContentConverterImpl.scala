@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j
 import org.apache.commons.lang3.StringUtils
 import org.drools.compiler.lang.DroolsSoftKeywords._
 import org.drools.modelcompiler.builder.generator.RuleContext
+import org.slf4j.{Logger, LoggerFactory}
 
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
@@ -16,6 +17,7 @@ import scala.collection.mutable.ListBuffer
  */
 @Slf4j
 object RuleContentConverterImpl extends RuleContentConverter {
+  private val log: Logger = LoggerFactory.getLogger(this.getClass);
   private val LINE_SEPARATOR_SYMBOL: String = "_/_/"
   private val BREAK_LINE_SYMBOL = " \n "
   private val QUOTE = "\""
@@ -49,6 +51,7 @@ object RuleContentConverterImpl extends RuleContentConverter {
           clause.ruleName = previousRuleName
           clauses += (previousRuleName -> clause)
 
+        case SALIENCE -> convertAndSetSalienceFromStringToContent(clauses.get(previousRuleName), block)
         case WHEN =>
           val whenClause = clauses.get(previousRuleName)
           if (whenClause.isDefined) {
@@ -114,6 +117,16 @@ object RuleContentConverterImpl extends RuleContentConverter {
 
   private def getRuleNameFromPattern(value: String) = value.replace(RULE, StringUtils.EMPTY).replace(QUOTE, StringUtils.EMPTY).trim
 
+  private def convertAndSetSalienceFromStringToContent(clause: RuleClause, value: String): Unit = {
+    if (value == null) return
+    val res = value.replace(SALIENCE, StringUtils.EMPTY).trim
+    try clause.salience = res.toLong
+    catch {
+      case e: Exception =>
+        log.error("Salience conversion is failed", e)
+    }
+  }
+
   private def convertAndSetWhenStringToContent(clause: RuleClause, value: String): Unit = {
     clause.whenClause = value.replace(WHEN, StringUtils.EMPTY).trim
   }
@@ -158,6 +171,7 @@ object RuleContentConverterImpl extends RuleContentConverter {
     clauses.foreach((cl: RuleClause) => {
       def foo(cl: RuleClause): Unit = {
         fillRuleName(sb, cl.ruleName)
+        fillSalience(sb, Option(cl.salience))
         fillWhenClause(sb, cl.whenClause)
         fillThenClause(sb, cl.thenClause)
         fillEndBlock(sb)
@@ -174,6 +188,9 @@ object RuleContentConverterImpl extends RuleContentConverter {
 
   private def wrapByQuotes(ruleName: String) = QUOTE + ruleName + QUOTE
 
+  private def fillSalience(sb: StringBuilder, salience: Option[Long]): Unit = {
+    salience.getOrElse((sal: Long) => sb.append(SALIENCE).append(StringUtils.SPACE).append(sal).append(LINE_SEPARATOR_SYMBOL).append(BREAK_LINE_SYMBOL))
+  }
 
   private def fillWhenClause(sb: StringBuilder, whenClause: String): Unit = {
     sb.append(WHEN).append(StringUtils.SPACE).append(whenClause).append(LINE_SEPARATOR_SYMBOL).append(BREAK_LINE_SYMBOL)

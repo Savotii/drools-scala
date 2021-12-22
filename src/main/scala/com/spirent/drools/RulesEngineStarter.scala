@@ -2,7 +2,7 @@ package com.spirent.drools
 
 import com.spirent.drools.dao.impl.RuleDaoImpl
 import com.spirent.drools.dto.rules.global.GlobalRuleCounter
-import com.spirent.drools.service.RuleServiceImpl
+import com.spirent.drools.service.ruleengine.impl.RuleServiceImpl
 
 /**
  * @author ysavi2
