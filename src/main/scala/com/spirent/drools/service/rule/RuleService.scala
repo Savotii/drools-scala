@@ -1,4 +1,4 @@
-package com.spirent.drools.service.ruleengine
+package com.spirent.drools.service.rule
 
 /**
  * @author ysavi2

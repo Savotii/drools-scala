@@ -1,9 +1,9 @@
-package com.spirent.drools.service.ruleengine.impl
+package com.spirent.drools.service.rule.impl
 
 import com.spirent.drools.converter.impl.RuleContentConverterImpl
 import com.spirent.drools.dao.impl.RuleDaoImpl
 import com.spirent.drools.dto.rules.Rule
-import com.spirent.drools.service.ruleengine.RuleService
+import com.spirent.drools.service.rule.RuleService
 import org.kie.api.KieServices
 import org.kie.api.builder.Message
 import org.kie.api.runtime.KieContainer

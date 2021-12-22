@@ -25,7 +25,7 @@ class AlertEvent extends KpiAbstract {
   private var name: String
   = "High latency alert"
   @Schema(description = "alert type", example = "CRITICAL, WARN etc.")
-  private var level: AlertLevel = _
+  private var level: AlertLevel.level = _
   @Schema(description = "List of the failed kpis", `type` = "array",
     example = "{\n" +
       "      \"id\": \"hostLatency\",\n" +
