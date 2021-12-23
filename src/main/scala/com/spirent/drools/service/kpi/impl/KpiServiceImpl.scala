@@ -1,16 +1,17 @@
 package com.spirent.drools.service.kpi.impl
 
 import com.spirent.drools.dao.impl.FilterRepositoryDao
-import com.spirent.drools.dto.alert.AlertEvent
+import com.spirent.drools.dto.alert.{AlertEvent, AlertLevel}
 import com.spirent.drools.dto.kpi.request.KpiRequest
 import com.spirent.drools.dto.rules.filter.KpiThresholdFilter
 import com.spirent.drools.service.alert.impl.AlertServiceImpl
 import com.spirent.drools.service.kpi.KpiService
 import com.spirent.drools.service.ruleengine.impl.DroolsEngineServiceImpl
 import com.spirent.drools.util.RuleFilterUtil
-import org.kie.api.runtime.rule.Match
 import io.bfil.automapper._
+import org.kie.api.runtime.rule.Match
 
+import java.time.Instant
 import java.util.UUID
 import scala.collection.mutable.ListBuffer
 
@@ -43,10 +44,27 @@ object KpiServiceImpl extends KpiService {
     filters.addAll(FilterRepositoryDao.findAll.map(filterModel => automap(filterModel).to[KpiThresholdFilter]))
   }
 
-  private def buildAlertMessageAndSend(request: KpiRequest, matches: ListBuffer[Match]): AlertEvent = {
-    val alert = automap(request).to[AlertEvent]
+  def mapToAlert(request: KpiRequest, matches: ListBuffer[Match]) = {
+    val alert = new AlertEvent()
     alert.alertId = UUID.randomUUID.toString
     alert.failedKpis = AlertServiceImpl.buildFailedKpiLatencyAlert(matches)
+    alert.testSessionId = request.testSessionId
+    alert.agentId = request.agentId
+    alert.agentTestId = request.agentTestId
+    alert.agentTestName = request.agentTestName
+    alert.category = request.category
+    alert.level = AlertLevel.Critical
+    alert.networkElementId= request.networkElementId
+    alert.pkg = request.pkg
+    alert.overlayId = request.overlayId
+    alert.timestamp = Instant.now
+    alert.workflowId = request.workflowId
+    alert.name = request.testName
+    alert
+  }
+
+  private def buildAlertMessageAndSend(request: KpiRequest, matches: ListBuffer[Match]): AlertEvent = {
+    val alert = mapToAlert(request, matches)
     AlertServiceImpl.saveEvent(alert)
     AlertServiceImpl.send(alert)
     alert

@@ -4,7 +4,7 @@ import com.spirent.drools.converter.impl.RuleContentConverterImpl
 import com.spirent.drools.dao.impl.RuleDaoImpl
 import com.spirent.drools.dto.kpi.Kpi
 import com.spirent.drools.dto.kpi.request.KpiRequest
-import com.spirent.drools.dto.rules.global.{GlobalBoolean, GlobalRuleCounter}
+import com.spirent.drools.dto.rules.globals.{GlobalBoolean, GlobalRuleCounter}
 import com.spirent.drools.listeners.TrackingAgendaEventListener
 import com.spirent.drools.model.rule.RuleModel
 import com.spirent.drools.service.ruleengine.RuleEngineService
@@ -57,7 +57,7 @@ object DroolsEngineServiceImpl extends RuleEngineService {
 
   def rebuildWholeContext(): Unit = {
     val kieRepository: KieRepository = KieServices.Factory.get().getRepository
-    kieRepository.addKieModule(kieRepository.getDefaultReleaseId)
+//    kieRepository.addKieModule(kieRepository.getDefaultReleaseId)
 
     kieFileSystem = {
       val fileSystem = KieServices.Factory.get().newKieFileSystem

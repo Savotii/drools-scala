@@ -1,4 +1,4 @@
-package com.spirent.drools.dto.rules.global
+package com.spirent.drools.dto.rules.globals
 
 /**
  * @author ysavi2

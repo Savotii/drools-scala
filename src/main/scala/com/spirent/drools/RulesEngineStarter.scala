@@ -1,7 +1,8 @@
 package com.spirent.drools
 
+import com.spirent.drools.config.kafka.{Consumer, Producer}
 import com.spirent.drools.dao.impl.RuleDaoImpl
-import com.spirent.drools.dto.rules.global.GlobalRuleCounter
+import com.spirent.drools.dto.rules.globals.GlobalRuleCounter
 import com.spirent.drools.service.rule.impl.RuleServiceImpl
 
 /**
@@ -18,6 +19,8 @@ object RulesEngineStarter {
     println("4. " + GlobalRuleCounter.updateAndGet(key))
     println("5. " + GlobalRuleCounter.get(key))
 
+    Producer.send()
+    Consumer.listen()
     RuleServiceImpl.reloadRules
     RuleDaoImpl.findAllRules.foreach(m => println(m.toString))
   }
