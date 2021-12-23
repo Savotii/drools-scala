@@ -12,11 +12,9 @@ import scala.collection.mutable.ListBuffer
  * @since 22.12.2021
  */
 trait KpiService {
-  def validateRules(kpiRequest: Kpi): Kpi
-
   def validateRules(kpiRequest: KpiRequest): AlertEvent
 
   def getFilters: ListBuffer[KpiThresholdFilter]
 
-  def updateFilters: Unit
+  def updateFilters(): Unit
 }

@@ -17,20 +17,21 @@ import java.time.Instant
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 class AlertEvent extends KpiAbstract {
+
   @Schema(description = "Date of the raised incident.", example = "2021-12-10T13:12:10Z")
-  private var timestamp: Instant = Instant.now
+  var timestamp: Instant = Instant.now
   @Schema(description = "UUID")
-  private var alertId: String = _
+  var alertId: String = _
   @Schema(description = "Rule which has been failed.")
-  private var name: String
+  var name: String
   = "High latency alert"
   @Schema(description = "alert type", example = "CRITICAL, WARN etc.")
-  private var level: AlertLevel.level = _
+  var level: AlertLevel.level = _
   @Schema(description = "List of the failed kpis", `type` = "array",
     example = "{\n" +
       "      \"id\": \"hostLatency\",\n" +
       "      \"value\": 34534,\n" +
       "      \"threshold\" : 1000\n" +
       "    }")
-  private var failedKpis: scala.collection.mutable.ListBuffer[FailedKpi] = new scala.collection.mutable.ListBuffer[FailedKpi]()
+  var failedKpis: scala.collection.mutable.ListBuffer[FailedKpi] = new scala.collection.mutable.ListBuffer[FailedKpi]()
 }

@@ -51,7 +51,7 @@ object RuleContentConverterImpl extends RuleContentConverter {
           clause.ruleName = previousRuleName
           clauses += (previousRuleName -> clause)
 
-        case SALIENCE -> convertAndSetSalienceFromStringToContent(clauses.get(previousRuleName), block)
+        case SALIENCE => convertAndSetSalienceFromStringToContent(clauses(previousRuleName), block)
         case WHEN =>
           val whenClause = clauses.get(previousRuleName)
           if (whenClause.isDefined) {

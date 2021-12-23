@@ -7,4 +7,4 @@ package com.spirent.drools.dto.rules
 case class RuleClause(var ruleName: String = "",
                       var whenClause: String = "",
                       var thenClause: String = "",
-                      var salience: Long = _)
+                      var salience: Long = 0)

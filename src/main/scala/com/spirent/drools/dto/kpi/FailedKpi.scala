@@ -4,4 +4,8 @@ package com.spirent.drools.dto.kpi
  * @author ysavi2
  * @since 22.12.2021
  */
-case class FailedKpi(name: String, latency: Long, threshold: Long)
+class FailedKpi() {
+  var name: String = _
+  var latency: Long = _
+  var threshold: Long = _
+}

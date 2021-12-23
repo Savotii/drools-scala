@@ -1,6 +1,7 @@
 package com.spirent.drools.dao
 
 import com.spirent.drools.dto.rules.Rule
+import com.spirent.drools.model.rule.RuleModel
 
 import scala.collection.mutable.ListBuffer
 
@@ -9,5 +10,7 @@ import scala.collection.mutable.ListBuffer
  * @since 16.12.2021
  */
 trait RuleDao {
-  def findAllRules : ListBuffer[Rule]
+  def findAllRules: ListBuffer[Rule]
+
+  def findAllRuleModel: ListBuffer[RuleModel]
 }

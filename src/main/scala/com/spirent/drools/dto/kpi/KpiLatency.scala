@@ -10,7 +10,7 @@ import lombok.experimental.Accessors
 @Data
 @Accessors(chain = true)
 class KpiLatency {
-  var threshold:Long = _
+  var threshold: Long = _
   var id: String = _
   var latency: Long = _
 }
