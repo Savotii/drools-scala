@@ -14,10 +14,7 @@ import scala.collection.mutable.ListBuffer
 object FilterRepositoryDao extends FilterDao {
   val selectAllThresholdFilters: String =
     """
-      |INSERT INTO public.alerts (agent_id, alert_id, agent_test_name, test_session_id, test_id, agent_test_id,
-      |workflow_id, overlay_id, network_element_id, category, "package", test_name, alert_name,
-      |level, "timestamp")
-      |VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      |SELECT * FROM public.kpi_threshold
     """.stripMargin
 
   override def findAll: ListBuffer[KpiThresholdFilterModel] = {
@@ -26,8 +23,7 @@ object FilterRepositoryDao extends FilterDao {
     val connection = DriverManager.getConnection(SqlConfig.url, SqlConfig.username, SqlConfig.password)
     val statement = connection.createStatement()
     val resultSet = statement.executeQuery(selectAllThresholdFilters)
-    statement.close()
-    connection.close()
+
 
     while (resultSet.next()) {
       result.addOne(KpiThresholdFilterModel(
@@ -36,6 +32,8 @@ object FilterRepositoryDao extends FilterDao {
         resultSet.getString("overlay_id"),
         resultSet.getLong("value")))
     }
+    statement.close()
+    connection.close()
     result
   }
 }

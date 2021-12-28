@@ -20,6 +20,9 @@ object RuleFilterUtil {
       filters.filter(
         (thr: KpiThresholdFilter) => request.testId.equals(thr.testId) && request.overlayId.equals(thr.overlayId))
         .lastOption
+
+    if (basedThreshold.isEmpty && dedicatedThreshold.isEmpty) {return}
+
     request.kpis.foreach((kpi: KpiLatency) =>
       kpi.threshold = dedicatedThreshold.getOrElse(basedThreshold.get).value)
   }

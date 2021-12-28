@@ -8,6 +8,7 @@ import com.spirent.drools.dto.rules.globals.{GlobalBoolean, GlobalRuleCounter}
 import com.spirent.drools.listeners.TrackingAgendaEventListener
 import com.spirent.drools.model.rule.RuleModel
 import com.spirent.drools.service.ruleengine.RuleEngineService
+import com.spirent.drools.util.RuleFilterUtil
 import org.apache.commons.lang3.StringUtils
 import org.kie.api.KieServices
 import org.kie.api.builder.{KieFileSystem, KieRepository}
@@ -39,7 +40,6 @@ object DroolsEngineServiceImpl extends RuleEngineService {
   }
 
   override def fireAllRules(kpiRequest: KpiRequest): ListBuffer[Match] = {
-    kieSession.addEventListener(TrackingAgendaEventListener)
     kpiRequest.kpis.foreach(kieSession.insert)
     kieSession.fireAllRules
     val matchList: ListBuffer[Match] = TrackingAgendaEventListener.getMatchList
@@ -57,7 +57,6 @@ object DroolsEngineServiceImpl extends RuleEngineService {
 
   def rebuildWholeContext(): Unit = {
     val kieRepository: KieRepository = KieServices.Factory.get().getRepository
-//    kieRepository.addKieModule(kieRepository.getDefaultReleaseId)
 
     kieFileSystem = {
       val fileSystem = KieServices.Factory.get().newKieFileSystem
@@ -84,7 +83,10 @@ object DroolsEngineServiceImpl extends RuleEngineService {
 
   def rebuildContainer(kieRepository: KieRepository): KieContainer = KieServices.Factory.get().newKieContainer(kieRepository.getDefaultReleaseId)
 
-  def rebuildSession(container: KieContainer): Unit = kieSession = container.newKieSession()
+  def rebuildSession(container: KieContainer): Unit = {
+    kieSession = container.newKieSession()
+    kieSession.addEventListener(TrackingAgendaEventListener)
+  }
 
   def setGlobal(): Unit = {
     try {

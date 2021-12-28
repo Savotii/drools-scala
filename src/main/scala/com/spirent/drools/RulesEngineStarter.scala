@@ -3,7 +3,9 @@ package com.spirent.drools
 import com.spirent.drools.config.kafka.{Consumer, Producer}
 import com.spirent.drools.dao.impl.RuleDaoImpl
 import com.spirent.drools.dto.rules.globals.GlobalRuleCounter
+import com.spirent.drools.service.kpi.impl.KpiServiceImpl
 import com.spirent.drools.service.rule.impl.RuleServiceImpl
+import com.spirent.drools.service.ruleengine.impl.DroolsEngineServiceImpl
 
 /**
  * @author ysavi2
@@ -19,10 +21,16 @@ object RulesEngineStarter {
     println("4. " + GlobalRuleCounter.updateAndGet(key))
     println("5. " + GlobalRuleCounter.get(key))
 
-    Producer.send()
+//    RuleServiceImpl.reloadRules
+    //1. get all thresholds etc.
+    KpiServiceImpl.updateFilters()
+    //2. load the drools context
+    DroolsEngineServiceImpl.rebuildWholeContext()
     Consumer.listen()
-    RuleServiceImpl.reloadRules
+    Producer.send()
     RuleDaoImpl.findAllRules.foreach(m => println(m.toString))
+
+    new Thread(() => while(true) {}).start()
   }
 
 }

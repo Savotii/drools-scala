@@ -16,18 +16,17 @@ import scala.collection.mutable.ListBuffer
  */
 object AlertServiceImpl extends AlertService {
   override def send(alert: AlertEvent): Unit = {
-    KafkaNotificationServiceImpl.send(alert)
+    KafkaNotificationServiceImpl.sendAlertNotification(alert.toJSON())
   }
 
   override def buildFailedKpiLatencyAlert(matches: ListBuffer[Match]): ListBuffer[FailedKpi] = {
     val result = new ListBuffer[FailedKpi]()
     for (found <- matches) {
-      val kpis: ListBuffer[KpiLatency] = found.getObjects.asInstanceOf[ListBuffer[KpiLatency]]
-      kpis.foreach((kpl: KpiLatency) => {
+      found.getObjects.forEach(kpl => {
         val fkpi = new FailedKpi
         fkpi.name = found.getRule.getName
-        fkpi.latency = kpl.latency
-        fkpi.threshold = kpl.threshold
+        fkpi.latency = kpl.asInstanceOf[KpiLatency].latency
+        fkpi.threshold = kpl.asInstanceOf[KpiLatency].threshold
         result.addOne(fkpi)
       })
     }

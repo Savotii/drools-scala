@@ -34,4 +34,48 @@ class AlertEvent extends KpiAbstract {
       "      \"threshold\" : 1000\n" +
       "    }")
   var failedKpis: scala.collection.mutable.ListBuffer[FailedKpi] = new scala.collection.mutable.ListBuffer[FailedKpi]()
+
+  override def toString = s"AlertEvent(timestamp=$timestamp, alertId=$alertId, name=$name, level=$level, failedKpis=$failedKpis)"
+
+  def toJSON(): String = {
+    val sbAlert: StringBuilder = new StringBuilder
+    val sbKpi: StringBuilder = new StringBuilder
+    convertKpisToJson(sbKpi)
+    convertAlertToJson(sbAlert, sbKpi)
+    sbAlert.toString()
+  }
+
+  private def convertAlertToJson(sbAlert: StringBuilder, sbKpis: StringBuilder): Unit = {
+    sbAlert.append("{").append("\n")
+    sbAlert.append("agentId").append(":").append(agentId).append(",").append("\n")
+    sbAlert.append("agentTestName").append(":").append(agentTestName).append(",").append("\n")
+    sbAlert.append("testSessionId").append(":").append(testSessionId).append(",").append("\n")
+    sbAlert.append("testId").append(":").append(testId).append(",").append("\n")
+    sbAlert.append("agentTestId").append(":").append(agentTestId).append(",").append("\n")
+    sbAlert.append("overlayId").append(":").append(overlayId).append(",").append("\n")
+    sbAlert.append("workflowId").append(":").append(workflowId).append(",").append("\n")
+    sbAlert.append("networkElementId").append(":").append(networkElementId).append(",").append("\n")
+    sbAlert.append("category").append(":").append(category).append(",").append("\n")
+    sbAlert.append("package").append(":").append(pkg).append(",").append("\n")
+    sbAlert.append("testName").append(":").append(testName).append(",").append("\n")
+    sbAlert.append("timestamp").append(":").append(timestamp).append(",").append("\n")
+    sbAlert.append("alertId").append(":").append(alertId).append(",").append("\n")
+    sbAlert.append("level").append(":").append(level).append(",").append("\n")
+    sbAlert.append("failed").append(":").append(failed).append(",").append("\n")
+    sbAlert.append(sbKpis.toString)
+    sbAlert.append("}").append("\n")
+  }
+
+  private def convertKpisToJson(sbKpi: StringBuilder): Unit = {
+    sbKpi.append("kpis: [").append("\n")
+    for (kpi <- failedKpis) {
+      sbKpi
+        .append("{").append("\n")
+        .append("name").append(":").append(kpi.name).append(",").append("\n")
+        .append("threshold").append(":").append(kpi.threshold).append(",").append("\n")
+        .append("latency").append(":").append(kpi.latency).append(",").append("\n")
+        .append("}").append("\n")
+    }
+    sbKpi.append("]\n")
+  }
 }

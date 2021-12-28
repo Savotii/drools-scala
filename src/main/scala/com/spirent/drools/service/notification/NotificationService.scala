@@ -5,5 +5,5 @@ package com.spirent.drools.service.notification
  * @since 22.12.2021
  */
 trait NotificationService {
-  def send(obj: AnyRef): Unit
+  def sendAlertNotification(obj: String): Unit
 }

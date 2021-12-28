@@ -43,5 +43,5 @@ object TrackingAgendaEventListener extends DefaultAgendaEventListener {
     matchList.clear()
   }
 
-  def getMatchList: ListBuffer[Match] = matchList
+  def getMatchList: ListBuffer[Match] = matchList.clone()
 }

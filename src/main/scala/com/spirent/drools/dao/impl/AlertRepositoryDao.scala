@@ -26,7 +26,11 @@ object AlertRepositoryDao extends AlertDao {
       |VALUES (?, ?, ?);
     """.stripMargin
 
-
+  val selectAlertId: String =
+    """
+      |SELECT id FROM public.alerts
+      |WHERE "agent_id" = ? and "alert_id" = ? and "test_session_id" = ?
+      |""".stripMargin
   override def saveAlertModel(model: AlertModel): AlertModel = {
     Class.forName(SqlConfig.driver)
     val connection = DriverManager.getConnection(SqlConfig.url, SqlConfig.username, SqlConfig.password)
@@ -46,8 +50,19 @@ object AlertRepositoryDao extends AlertDao {
     preparedStmt.setString(13, model.alertName)
     preparedStmt.setString(14, model.level)
     preparedStmt.setString(15, model.timestamp.toString)
-    val resultSet = preparedStmt.executeQuery()
+    preparedStmt.execute()
     preparedStmt.close()
+
+    //get the id of the saved model
+    val statement = connection.prepareStatement(selectAlertId)
+    statement.setString(1, model.agentId)
+    statement.setString(2, model.alertId)
+    statement.setString(3, model.testSessionId)
+    val result = statement.executeQuery()
+    if (result.next()){
+      model.id = result.getLong(1)
+    }
+    statement.close()
     connection.close()
     //todo map to alertModel and return
 
@@ -66,7 +81,6 @@ object AlertRepositoryDao extends AlertDao {
       preparedStmt.setLong(3, kpi.alertId)
       preparedStmt.addBatch()
     })
-    val resultSet = preparedStmt.executeQuery()
     preparedStmt.close()
     connection.close()
 
