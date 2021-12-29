@@ -1,6 +1,9 @@
 package com.spirent.drools.config.kafka
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.spirent.drools.dto.kpi.KpiLatency
+import com.spirent.drools.dto.kpi.request.KpiRequest
+import com.spirent.drools.util.JsonObjectMapper
 
 import java.util.UUID
 import scala.util.Random
@@ -13,20 +16,20 @@ object FakeMessageGenerator {
   private val mapper: ObjectMapper = new ObjectMapper
   private val template =
     "{ " +
-      "agentId: %s," +
-      "agentTestName:%s," +
-      "testSessionId:%s," +
-      "testId:%s," +
-      "agentTestId: %s," +
-      "workflowId: %s," +
-      "overlayId: %s," +
-      "networkElementId: %s," +
-      "category: Voice," +
-      "package: 5G Core - N2N3 Assurance," +
-      "testName: Registration," +
-      "kpis: [ " +
+      "\"agentId\": \"%s\"," +
+      "\"agentTestName\":\"%s\"," +
+      "\"testSessionId\":\"%s\"," +
+      "\"testId\":\"%s\"," +
+      "\"agentTestId\": \"%s\"," +
+      "\"workflowId\": \"%s\"," +
+      "\"overlayId\": \"%s\"," +
+      "\"networkElementId\": \"%s\"," +
+      "\"category\": \"Voice\"," +
+      "\"package\": \"5G Core - \"N2N3 Assurance\"," +
+      "\"testName\": \"Registration\"," +
+      "\"kpis\": [ " +
              " { " +
-                "latency: %s" +
+                "\"latency\": %s" +
                   " } " +
              " ] " +
     "}"
@@ -39,33 +42,33 @@ object FakeMessageGenerator {
   }
 
   def generateMessage: String = {
-    //    val request = new KpiRequest
-    //    request.agentId = UUID.randomUUID().toString
-    //    request.agentTestName = UUID.randomUUID().toString
-    //    request.testSessionId = UUID.randomUUID().toString
-    //    request.testId = UUID.randomUUID().toString
-    //    request.agentTestId = UUID.randomUUID().toString
-    //    request.workflowId = UUID.randomUUID().toString
-    //    request.overlayId = UUID.randomUUID().toString
-    //    request.networkElementId = UUID.randomUUID().toString
-    //    request.category = "Voice"
-    //    request.pkg = "5G Core - N2N3 Assurance"
-    //    request.testName = "Registration"
-    //
-    //    val latency = new KpiLatency
-    //    latency.latency = generateLatency
-    //    request.kpis.addOne(latency)
-    //    mapper.writeValueAsString(request)
+        val request = new KpiRequest
+        request.agentId = UUID.randomUUID().toString
+        request.agentTestName = UUID.randomUUID().toString
+        request.testSessionId = UUID.randomUUID().toString
+        request.testId = UUID.randomUUID().toString
+        request.agentTestId = UUID.randomUUID().toString
+        request.workflowId = UUID.randomUUID().toString
+        request.overlayId = UUID.randomUUID().toString
+        request.networkElementId = UUID.randomUUID().toString
+        request.category = "Voice"
+        request.pkg = "5G Core - N2N3 Assurance"
+        request.testName = "Registration"
 
-    String.format(template,
-      UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
-      generateLatency)
+        val latency = new KpiLatency
+        latency.latency = generateLatency
+        request.kpis.addOne(latency)
+        JsonObjectMapper.toJson(request)
+
+//    String.format(template,
+//      UUID.randomUUID().toString,
+//      UUID.randomUUID().toString,
+//      UUID.randomUUID().toString,
+//      UUID.randomUUID().toString,
+//      UUID.randomUUID().toString,
+//      UUID.randomUUID().toString,
+//      UUID.randomUUID().toString,
+//      UUID.randomUUID().toString,
+//      generateLatency)
   }
 }
