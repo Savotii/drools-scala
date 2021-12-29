@@ -1,0 +1,18 @@
+default: &default
+  applicationName: "Agents lifecycle events ingestion (session & agent registration)"
+  batchDuration: 10
+  partitionsNumber: 32
+  localMode: "false"
+
+development:
+  <<: *default
+  partitionsNumber: 8
+
+staging:
+  <<: *default
+
+local:
+  <<: *default
+  batchDuration: 3
+  partitionsNumber: 1
+  localMode: "true"

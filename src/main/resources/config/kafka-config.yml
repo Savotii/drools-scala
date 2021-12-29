@@ -1,0 +1,30 @@
+default: &default
+  bootstrapServers: "kafka:9092"
+  offsetReset: "earliest"
+  enableAutoCommit: false
+  consumerGroup: "agent-lifecycle-events-ingestion"
+  topics:
+    source: "test_topic"
+    destinations:
+      persistenceEvents: "dp-events-to-persist"
+      notValidEvents: "dp-invalid-session-lifecycle-events"
+
+development:
+  <<: *default
+  bootstrapServers: "10.195.176.47:30092"
+  consumerGroup: "test_topic-dev"
+
+staging:
+  <<: *default
+  bootstrapServers: "10.195.184.109:30092"
+  consumerGroup: "test_topic-stg"
+
+local:
+  <<: *default
+  bootstrapServers: "localhost:29092"
+  consumerGroup: "test_topic-local"
+  topics:
+    source: "text_topic"
+    destinations:
+      persistenceEvents: "local-dp-events-to-persist"
+      notValidEvents: "local-dp-invalid-session-lifecycle-events"

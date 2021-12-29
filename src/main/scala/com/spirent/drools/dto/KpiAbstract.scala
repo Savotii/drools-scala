@@ -1,5 +1,7 @@
 package com.spirent.drools.dto
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
 /**
  * @author ysavi2
  * @since 20.12.2021
@@ -17,7 +19,8 @@ trait KpiAbstract {
   var networkElementId: String = _
 
   var category: String = _
-  var pkg: String = _
+
+  @JsonProperty("package") var pkg: String = _
   var testName: String = _
   var failed: Boolean = _
 }

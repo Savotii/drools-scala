@@ -4,7 +4,6 @@ import com.spirent.drools.config.kafka.{Consumer, Producer}
 import com.spirent.drools.dao.impl.RuleDaoImpl
 import com.spirent.drools.dto.rules.globals.GlobalRuleCounter
 import com.spirent.drools.service.kpi.impl.KpiServiceImpl
-import com.spirent.drools.service.rule.impl.RuleServiceImpl
 import com.spirent.drools.service.ruleengine.impl.DroolsEngineServiceImpl
 
 /**
