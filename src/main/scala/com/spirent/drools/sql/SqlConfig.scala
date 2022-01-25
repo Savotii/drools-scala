@@ -6,7 +6,7 @@ package com.spirent.drools.sql
  */
 object SqlConfig {
   val driver = "org.postgresql.Driver"
-  val url = "jdbc:postgresql://localhost:5435/db"
-  val username = "user"
-  val password = "user"
+  val url = "jdbc:postgresql://10.195.184.58:35432/spirentstage"
+  val username = "ubuntu"
+  val password = "SPIRENTadmin2021"
 }

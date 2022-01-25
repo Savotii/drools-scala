@@ -14,21 +14,21 @@ import scala.collection.mutable.ListBuffer
 object AlertRepositoryDao extends AlertDao {
   val insertAlertModelSql: String =
     """
-      |INSERT INTO public.alerts (agent_id, alert_id, agent_test_name, test_session_id, test_id, agent_test_id,
+      |INSERT INTO rules.alerts (agent_id, alert_id, agent_test_name, test_session_id, test_id, agent_test_id,
       |workflow_id, overlay_id, network_element_id, category, "package", test_name, alert_name,
       |level, "timestamp")
       |VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """.stripMargin
   val insertFailedKpisSql: String =
     """
-      |INSERT INTO public.failed_kpis(
+      |INSERT INTO rules.failed_kpis(
       |latency, threshold, alert_id)
       |VALUES (?, ?, ?);
     """.stripMargin
 
   val selectAlertId: String =
     """
-      |SELECT id FROM public.alerts
+      |SELECT id FROM rules.alerts
       |WHERE "agent_id" = ? and "alert_id" = ? and "test_session_id" = ?
       |""".stripMargin
   override def saveAlertModel(model: AlertModel): AlertModel = {

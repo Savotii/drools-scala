@@ -39,7 +39,7 @@ class RuleContent {
 
   def setGlobalVariables(globalVariables: ListBuffer[String]): Unit = _globalVariables = globalVariables
 
-  def setGlobalVariable(variable: String): Unit = _globalVariables.addOne(variable)
+  def setGlobalVariable(variable: String): Unit = _globalVariables += variable
 
   def getAttributes: mutable.Set[String] = _attributes
 
@@ -55,7 +55,7 @@ class RuleContent {
 
   def setClauses(clauses: ListBuffer[RuleClause]): Unit = _clauses = clauses
 
-  def setClause(clause: RuleClause): Unit = _clauses.addOne(clause)
+  def setClause(clause: RuleClause): Unit = _clauses += clause
 
   override def toString: String = s"RuleContent(headerPakages=${_headerPackage}, imports=${_imports}, globalVariables=${_globalVariables}, attributes=${_attributes}," +
     s"dialect=${_dialect}, clauses=${_clauses}"

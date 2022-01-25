@@ -68,7 +68,11 @@ object RuleContentConverterImpl extends RuleContentConverter {
       }
     }
 
-    convertedContent.setClauses(ListBuffer.from(clauses.values))
+    val res: ListBuffer[RuleClause] = new ListBuffer[RuleClause]()
+    clauses.values.foreach(r => res+=r)
+//    res += clauses.values.seq
+//    convertedContent.setClauses(ListBuffer.from(clauses.values))
+    convertedContent.setClauses(res)
     convertedContent
   }
 

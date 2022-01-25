@@ -2,7 +2,7 @@ name := "Spark-drools"
 
 version := "1.0"
 
-scalaVersion := "2.13.7" //"2.12.7" //
+scalaVersion := "2.12.15" //"2.13.7" //
 
 val sparkVersion = "3.2.0"
 val kafkaVersion = "2.8.0"
@@ -45,7 +45,8 @@ libraryDependencies += "org.postgresql" % "postgresql" % "42.3.1"
 libraryDependencies += "com.typesafe.slick" %% "slick" % "3.3.3"
 libraryDependencies += "org.slf4j" % "slf4j-api" % "1.7.5"
 libraryDependencies += "org.slf4j" % "slf4j-simple" % "1.7.5"
-libraryDependencies += "io.bfil" %% "automapper" % "0.7.0"
+//libraryDependencies += "io.bfil" %% "automapper" % "0.7.0"
+libraryDependencies += "io.bfil" %% "automapper" % "0.6.2"
 libraryDependencies += "org.apache.spark" %% "spark-core" % sparkVersion % "provided"
 libraryDependencies += "org.apache.spark" %% "spark-sql" % sparkVersion
 libraryDependencies += "org.apache.spark" %% "spark-streaming" % sparkVersion
@@ -58,5 +59,12 @@ libraryDependencies +=
   // redis
   "redis.clients" % "jedis" % jedisVersion
 
+Compile / mainClass := Some("com.spirent.drools.SparkEngineStarter")
+assembly / mainClass := Some("com.spirent.drools.SparkEngineStarter")
 
+// META-INF discarding
+ThisBuild / assemblyMergeStrategy := {
+  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+  case x => MergeStrategy.first
+}
 

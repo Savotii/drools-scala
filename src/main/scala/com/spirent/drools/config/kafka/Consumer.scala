@@ -11,7 +11,7 @@ import java.time.Duration
 import java.util
 import java.util.Properties
 import java.util.concurrent.CompletableFuture
-import scala.jdk.CollectionConverters.IterableHasAsScala
+import scala.jdk.CollectionConverters._
 
 /**
  * @author ysavi2
@@ -33,13 +33,14 @@ object Consumer {
       props.put("enable.auto.commit", "true")
             props.put("auto.commit.interval.ms", "1000")
       val consumer = new KafkaConsumer(props)
-      val topics: util.List[String] = util.List.of("text_topic")
+      val topics: util.List[String] = new util.ArrayList()
+      topics.add("text_topic")
       try {
         consumer.subscribe(topics)
         while (true) {
           val records = consumer.poll(Duration.ofMillis(10))
           if (!records.isEmpty) {
-            for (record <- records.asScala) {
+            for (record <- records.iterator().asScala) {
               println("Topic: " + record.topic() +
                 ",Key: " + record.key() +
                 ",Value: " + record.value() +
@@ -74,7 +75,7 @@ object Consumer {
         val splittedKpis = trimmed.split(":")
         val latency = new KpiLatency
         latency.latency = splittedKpis(1).trim.toLong
-        kpiRequest.kpis.addOne(latency)
+        kpiRequest.kpis += latency
       } else {
 
         val splitted: Array[String] = str.split(":")

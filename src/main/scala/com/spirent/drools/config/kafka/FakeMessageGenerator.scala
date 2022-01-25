@@ -35,8 +35,8 @@ object FakeMessageGenerator {
     "}"
 
   private def generateLatency: Long = {
-    val random = new Random()
-    val int: Long = random.between(10000, 70000)
+    val random = new Random(70000)
+    val int: Long = random.nextInt()
     println("New latency = " + int)
     int
   }
@@ -57,7 +57,7 @@ object FakeMessageGenerator {
 
         val latency = new KpiLatency
         latency.latency = generateLatency
-        request.kpis.addOne(latency)
+        request.kpis += latency
         JsonObjectMapper.toJson(request)
 
 //    String.format(template,

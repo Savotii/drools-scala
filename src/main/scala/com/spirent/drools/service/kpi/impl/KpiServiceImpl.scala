@@ -41,7 +41,11 @@ object KpiServiceImpl extends KpiService {
 
   override def updateFilters(): Unit = {
     filters.clear()
-    filters.addAll(FilterRepositoryDao.findAll.map(filterModel => automap(filterModel).to[KpiThresholdFilter]))
+    //    filters.addAll(FilterRepositoryDao.findAll.map(filterModel => automap(filterModel).to[KpiThresholdFilter]))
+    //todo will it work here as intended? += will the whole list be added?
+    //    filters += FilterRepositoryDao.findAll.map(filterModel => automap(filterModel).to[KpiThresholdFilter])
+    FilterRepositoryDao.findAll.map(filterModel => automap(filterModel).to[KpiThresholdFilter])
+      .foreach(r => filters += r)
   }
 
   def mapToAlert(request: KpiRequest, matches: ListBuffer[Match]) = {
@@ -54,7 +58,7 @@ object KpiServiceImpl extends KpiService {
     alert.agentTestName = request.agentTestName
     alert.category = request.category
     alert.level = AlertLevel.Critical
-    alert.networkElementId= request.networkElementId
+    alert.networkElementId = request.networkElementId
     alert.pkg = request.pkg
     alert.overlayId = request.overlayId
     alert.timestamp = Instant.now

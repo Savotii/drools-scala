@@ -14,7 +14,7 @@ import scala.collection.mutable.ListBuffer
 object FilterRepositoryDao extends FilterDao {
   val selectAllThresholdFilters: String =
     """
-      |SELECT * FROM public.kpi_threshold
+      |SELECT * FROM rules.kpi_threshold
     """.stripMargin
 
   override def findAll: ListBuffer[KpiThresholdFilterModel] = {
@@ -26,11 +26,11 @@ object FilterRepositoryDao extends FilterDao {
 
 
     while (resultSet.next()) {
-      result.addOne(KpiThresholdFilterModel(
+      result += KpiThresholdFilterModel(
         resultSet.getLong("id"),
         resultSet.getString("test_id"),
         resultSet.getString("overlay_id"),
-        resultSet.getLong("value")))
+        resultSet.getLong("value"))
     }
     statement.close()
     connection.close()

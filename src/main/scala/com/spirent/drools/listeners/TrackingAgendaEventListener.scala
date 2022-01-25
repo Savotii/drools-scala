@@ -35,7 +35,7 @@ object TrackingAgendaEventListener extends DefaultAgendaEventListener {
   }
 
   override def afterMatchFired(event: AfterMatchFiredEvent): Unit = {
-    matchList.addOne(event.getMatch)
+    matchList += event.getMatch
     logEvent(event)
   }
 

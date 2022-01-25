@@ -14,13 +14,13 @@ import scala.collection.mutable.ListBuffer
  */
 object RuleDaoImpl extends RuleDao {
   override def findAllRules: ListBuffer[Rule] = {
-    ListBuffer.from(findAllRuleModel.map(mapToRule))
+    findAllRuleModel.map(mapToRule)
   }
 
   def mapToRule(model: RuleModel): Rule = {
     Rule(model.id, model.ruleKey, RuleContentConverterImpl.convertFromString(model.content), model.version, model.lastModifyTime, model.createTime)
   }
 
-  override def findAllRuleModel: ListBuffer[RuleModel] = ConnectionUtil.selectRulesFromDb("Select * from rules")
+  override def findAllRuleModel: ListBuffer[RuleModel] = ConnectionUtil.selectRulesFromDb("Select * from rules.rules")
 
 }

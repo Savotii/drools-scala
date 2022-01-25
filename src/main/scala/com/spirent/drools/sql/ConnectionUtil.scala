@@ -26,7 +26,7 @@ object ConnectionUtil {
         model.version = resultSet.getString("version")
         model.lastModifyTime = resultSet.getString("last_modify_time")
         model.createTime = resultSet.getString("create_time")
-        rules.addOne(model)
+        rules += model
       }
     } catch {
       case e: Throwable => e.printStackTrace

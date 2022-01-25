@@ -27,7 +27,7 @@ object AlertServiceImpl extends AlertService {
         fkpi.name = found.getRule.getName
         fkpi.latency = kpl.asInstanceOf[KpiLatency].latency
         fkpi.threshold = kpl.asInstanceOf[KpiLatency].threshold
-        result.addOne(fkpi)
+        result += fkpi
       })
     }
     result
